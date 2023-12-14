@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* not work kor tailwind over lap */
+.drawer-side  a {
+    color:black;
+background-color: transparent;
+} 
+
+.drawer-side  a.active {
+    color: white!important;
+    background-color: transparent!important;
+}
