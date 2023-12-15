@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import useCart from "../../../hooks/useCart";
-import { FaTrash } from "react-icons/fa";
+import {  FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 const Mycart = () => {
@@ -77,7 +77,7 @@ const Mycart = () => {
               <td className="text-end">${item.price}</td>
             <td>
               <button onClick={()=>handleDelete(item)} className="btn btn-ghost btn-xl bg-red-600 text-white">
-              <FaTrash></FaTrash>
+              <FaTrashAlt></FaTrashAlt>
               </button>
             </td>
           </tr>

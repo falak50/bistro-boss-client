@@ -2,33 +2,53 @@ import { useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../providers/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 
 
 const SignUp = () => {
-   const {register,handleSubmit,formState: { errors }} = useForm(); 
-   const {createUser,updateUserProfile} = useContext(AuthContext)
+   const {register,handleSubmit,reset,formState: { errors }} = useForm(); 
+   const {createUser,updateUserProfile} = useContext(AuthContext);
+   const navigate = useNavigate();
    const onSubmit = data => {
     console.log(data);
+    console.log('in submit')
     createUser(data.email,data.password)
     .then(results => {
         console.log('in the createUSER')
         const loggedUsed = results.user;
         console.log(loggedUsed);
         console.log('signup->createuser->then->name,url',data.name,data.photoURL)
-        
+        console.log('in create user sing in  ')
         updateUserProfile(data.name,data.photoURL)
         .then(()=>{
-          console.log('user profile info updated')
-          // reset(); import in usefrom ,handleSubmit,reset
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "User created successfully.",
-            showConfirmButton: false,
-            timer: 1500
-          });
+          console.log('in update ')
+          const saveUser = {name:data.name,email:data.email}
+          fetch('http://localhost:5000/users',{
+            method:'POST',
+            headers:{
+              'content-type':'application/json'
+            },
+            body: JSON.stringify(saveUser)
+          })
+          .then(res => res.json())
+          .then(data => {
+            if(data.insertedId){
+              console.log('in data insertID')
+              // todo reset();
+              reset();
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "User created successfully.",
+                showConfirmButton: false,
+                timer: 1500
+              });
+              navigate('/');
+            }
+          })
+         
         })
         .catch(error=>console.log(error))
     })
@@ -99,6 +119,7 @@ const SignUp = () => {
               </div>
             </form>
             <p><small>Already have an acount <Link to="/login">Login</Link> </small></p>
+            <SocialLogin></SocialLogin>
           </div>
         </div>
       </div>

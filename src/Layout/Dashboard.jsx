@@ -1,8 +1,11 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { FaCalendarAlt, FaHome, FaShoppingCart, FaWallet } from "react-icons/fa";
+import { FaBook, FaCalendarAlt, FaHome, FaShoppingCart, FaUsers, FaUtensils, FaWallet } from "react-icons/fa";
 import useCart from "../hooks/useCart";
 const Dashboard = () => {
    const [cart] =  useCart();
+
+   // TODO : LOAD DATA FROM THE SERVER TO HAVE DYNAMIC ISASMID BASE ON DATA
+   const isAdmin = true ;
     return (
         <div className="drawer lg:drawer-open ">
   <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -17,15 +20,29 @@ const Dashboard = () => {
     <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label> 
     <ul className="menu p-4 w-80 min-h-full  bg-[#D1A054] ">
       {/* Sidebar content here */}
-      <li><NavLink to="/dashboard/mycart1"><FaHome />User Home</NavLink></li>
-      <li><NavLink to="/dashboard/mycart2"><FaCalendarAlt /> Reservations</NavLink></li>
-      <li><NavLink to="/dashboard/mycart3"><FaWallet /> Payment History</NavLink></li>
-      <li>
-        <NavLink to="/dashboard/mycart"><FaShoppingCart/> My Cart
-        <span className="badge badge-secondary">+{cart?.length || 0}</span>
-        </NavLink>
+      {
+        isAdmin ? <>
+          <li><NavLink to="/dashboard/mycart1"><FaHome />Admin Home</NavLink></li>
+          <li> <NavLink to="/dashboard/mycart2"><FaUtensils /> Add Items</NavLink></li>
+          <li><NavLink to="/dashboard/mycart3"><FaWallet /> Manage Items</NavLink></li>
+          <li><NavLink to="/dashboard/mycart3"><FaBook /> Manage Bookings</NavLink></li>
+          <li><NavLink to="/dashboard/allusers"><FaUsers /> All users</NavLink></li>
+          
+        
+        </>: <>
+          <li><NavLink to="/dashboard/mycart1"><FaHome />User Home</NavLink></li>
+          <li> <NavLink to="/dashboard/mycart2"><FaCalendarAlt /> Reservations</NavLink></li>
+          <li><NavLink to="/dashboard/mycart3"><FaWallet /> Payment History</NavLink></li>
+          <li>
+            <NavLink to="/dashboard/mycart"><FaShoppingCart/> My Cart
+            <span className="badge badge-secondary">+{cart?.length || 0}</span>
+            </NavLink>
+           </li>
+        
+        </>
+      }
+      
 
-     </li>
       <div className="divider"></div>
       <li><NavLink to="/"><FaHome></FaHome> Home</NavLink></li>
       <li><NavLink to="/"></NavLink></li>
